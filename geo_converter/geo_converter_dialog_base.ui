@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GeoConverterDialogBase</class>
+ <widget class="QDialog" name="GeoConverterDialogBase">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>506</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Geo Converter</string>
+  </property>
+  <widget class="QDialogButtonBox" name="button_box">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>470</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="text_input">
+   <property name="geometry">
+    <rect>
+     <x>22</x>
+     <y>70</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="text_output">
+   <property name="geometry">
+    <rect>
+     <x>22</x>
+     <y>140</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_in">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>70</y>
+     <width>31</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_out">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>140</y>
+     <width>31</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>...</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="combo_sep_in">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>70</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Semikolon</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Komma</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Space</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tab</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="combo_epsg_in">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>ESPG:3857 (Pseudo Mercator)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:4326 (WGS84)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ESPG:31251 (MGI (Ferro) / Austria GK West Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31252 (MGI (Ferro) / Austria GK Central Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31253 (MGI (Ferro) / Austria GK East Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31254 (MGI  Austria GK West)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31255 (MGI  Austria GK Central)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31256 (MGI  Austria GK East)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31257 (MGI / Austria GK M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31258 (MGI / Austria GK M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31259 (MGI / Austria GK M34)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31281 (MGI (Ferro) / Austria West Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31282 (MGI (Ferro) / Austria Central Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31283 (MGI (Ferro) / Austria East Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31284 (MGI / Austria M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31285 (MGI / Austria M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31286 (MGI / Austria M34)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31288 (MGI (Ferro) / M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31289 (MGI (Ferro) / M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31290 (MGI (Ferro) / M32)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9271 (MGI / Austria West)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9272 (MGI / Austria Central)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9273  (MGI / Austria East)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="combo_sep_out">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>140</y>
+     <width>69</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>Semikolon</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Komma</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Space</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Tab</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="combo_epsg_out">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>170</y>
+     <width>221</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>ESPG:3857 (Pseudo Mercator)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:4326 (WGS84)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>ESPG:31251 (MGI (Ferro) / Austria GK West Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31252 (MGI (Ferro) / Austria GK Central Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31253 (MGI (Ferro) / Austria GK East Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31254 (MGI  Austria GK West)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31255 (MGI  Austria GK Central)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31256 (MGI  Austria GK East)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31257 (MGI / Austria GK M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31258 (MGI / Austria GK M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31259 (MGI / Austria GK M34)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31281 (MGI (Ferro) / Austria West Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31282 (MGI (Ferro) / Austria Central Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31283 (MGI (Ferro) / Austria East Zone)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31284 (MGI / Austria M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31285 (MGI / Austria M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31286 (MGI / Austria M34)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31288 (MGI (Ferro) / M28)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31289 (MGI (Ferro) / M31)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:31290 (MGI (Ferro) / M32)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9271 (MGI / Austria West)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9272 (MGI / Austria Central)</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>EPSG:9273  (MGI / Austria East)</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="button_go">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>220</y>
+     <width>75</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>GO</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>20</y>
+     <width>411</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>GEO Transformator</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>296</y>
+     <width>351</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="scrollAreaWidgetContents">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>349</width>
+      <height>149</height>
+     </rect>
+    </property>
+    <widget class="QTableView" name="table_preview">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>351</width>
+       <height>151</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QComboBox" name="combo_feld1">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>220</y>
+     <width>80</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="combo_feld1_2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>220</y>
+     <width>80</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="combo_feld1_3">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>220</y>
+     <width>80</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>200</y>
+     <width>63</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Feld 1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>200</y>
+     <width>63</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Feld 2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>200</y>
+     <width>63</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Feld 3</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_update">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>260</y>
+     <width>61</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>update</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>button_box</sender>
+   <signal>accepted()</signal>
+   <receiver>GeoConverterDialogBase</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_box</sender>
+   <signal>rejected()</signal>
+   <receiver>GeoConverterDialogBase</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
