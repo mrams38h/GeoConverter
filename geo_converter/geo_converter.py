@@ -23,16 +23,18 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
-from PyQt5.QtWidgets import QAction, QFileDialog, QTableWidgetItem
-#import sys
+from PyQt5.QtWidgets import QAction, QFileDialog, QTableWidgetItem, QTableView
+import sys, os
 #from PyQt4.QtCore import *
 #from PyQt4.QtGui import *
 #from qgis.core import QgsProject, Qgis
-from pyproj import Transformer
+#from pyproj import Transformer
 from pyproj import Proj, transform
+#from pyproj import Transformer
 
 
-
+file_path = './pyproj/pyproj' # path to pyproj folder
+sys.path.append(os.path.dirname(file_path))
 
 
 # Initialize Qt resources from file resources.py
@@ -51,6 +53,9 @@ class GeoConverter:
     pos1 = 0
     pos2 = 0
     pos3 = 0
+    sep_in = ';'
+    sep_out = '\t'
+    seplist = [';',',',' ','\t']
 
     def __init__(self, iface):
         """Constructor.
@@ -198,13 +203,17 @@ class GeoConverter:
 
 
     def openInFile(self):
-        self.inname =  QFileDialog.getOpenFileName(self.dlg, 'Open file', 'c:\\',"Text files (*.txt *.csv)")
+        temp = QFileDialog.getOpenFileName(self.dlg, 'Open file', 'c:\\',"Text files (*.txt *.csv)")
+        self.inname = temp[0]
+        print(self.inname)
         self.dlg.text_input.setText(self.inname)
         self.populateCombos()
         
 
     def openOutFile(self):
-        self.outname = QFileDialog.getOpenFileName(self.dlg, 'Save output file')
+        temp = QFileDialog.getSaveFileName(self.dlg, 'Save file')
+        self.outname = temp[0]
+        print(self.outname)
         self.dlg.text_output.setText(self.outname)
    
     def populateCombos(self):
@@ -212,14 +221,19 @@ class GeoConverter:
         # split per input limiter
         # ask for field selection
         # show result in table
+        tp1 = self.dlg.combo_sep_in.currentIndex()
+        tp2 = self.dlg.combo_sep_out.currentIndex()
+        self.sep_in = self.seplist[tp1]
+        self.sep_out = self.seplist[tp2]
+
         file = open(self.inname, 'r')
         count = 0
         Lines = file.readlines()
         for line in Lines:
-            parts = line.split(self.glob_seperator)
+            parts = line.split(self.sep_in)
             siz = len(parts) # anzahl der Spalten
             if count == 1:                    
-                self.dlg.table_preview.setColumnCount(4)
+                self.dlg.table_preview.setColumnCount(3)
                 self.dlg.table_preview.setRowCount(12)
                 hdnames = ['X','Y','Z']
                 for i in range(siz):
@@ -253,17 +267,17 @@ class GeoConverter:
         Lines = file.readlines()
         count = 0
         for line in Lines:
-            parts = line.split(self.glob_seperator)
-            self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[pos1]))
-            self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[pos2]))
-            self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[pos3]))
+            parts = line.split(self.sep_in)
+            self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[self.pos1]))
+            self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[self.pos2]))
+            self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[self.pos3]))
             count += 1
-
+        file.close()
         
 
     def convertFile(self):
-        insep = self.dlg.combo_sep_in.currentText()
-        outsep = self.dlg.combo_sep_out.currentText()
+        #insep = self.dlg.combo_sep_in.currentText()
+        #outsep = self.dlg.combo_sep_out.currentText()
 
         epIn = self.dlg.combo_epsg_in.currentText()
         epOut = self.dlg.combo_epsg_out.currentText()
@@ -271,27 +285,28 @@ class GeoConverter:
         outfile = open(self.outname,'w')
 
         prjxi = epIn.split(' ')
-        prj_in = prjxi[0].lower()
-        inProj = Proj(prj_in)
+        prj_in = prjxi[0]#.lower()
+        inProj = Proj(init='epsg:3758') #Proj(prj_in)
 
         prjxo = epOut.split(' ')
-        prj_out = prjxo[0].lower()
-        outProj = Proj(prj_out)
+        prj_out = prjxo[0]#.lower()
+        outProj = Proj(init='epsg:31258') #Proj(prj_out)
 
         Lines = infile.readlines()
         count = 0
         for lines in Lines: 
-            parts = lines.split(insep)
-            rechts = parts[self.pos1]
-            hoch = parts[self.pos2]
-            zet = parts[self.pos3]
-            # hier konverteiren
-            transformer = Transformer.from_crs(inProj, outProj)
-            x1,y1 = rechts,hoch
-            x2,y2 = transformer.transform(x1,y1)
-            x2 = round(x2,8)
-            y2 = round(y2,8)
-            outfile.write(x2+outsep+y2+outsep+zet+"\n")
+            parts = lines.split(self.sep_in)
+            if len(parts)>=3 : 
+               rechts = parts[self.pos1]
+               hoch = parts[self.pos2]
+               zet = parts[self.pos3]
+               # hier konverteiren
+               #transformer = Transformer.from_crs("EPSG:3857", "EPSG:31258")
+               x1,y1 = rechts,hoch
+               x2,y2 = transform(inProj,outProj,x1,y1)
+               x2 = round(x2,8)
+               y2 = round(y2,8)
+               outfile.write(x2+outsep+y2+outsep+zet+"\n")
         infile.close()
         outfile.close()
 
