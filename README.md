@@ -9,7 +9,7 @@ and the data has diffenent coordinat systems.
 It's possible that the conversion is not as exact than from an pro tool, but should be stil 
 ok for drawings.
 
-![alt text](https://github.com/mrams38h/GeoConverter/geoScreen.png?raw=true)
+![alt text](https://github.com/mrams38h/GeoConverter/blob/main/geoScreen.PNG?raw=true)
 
 # Prepare Python
  Install pyreproj by opening python shell in qgis and do the following commands: 
