@@ -285,13 +285,17 @@ class GeoConverter:
         outfile = open(self.outname,'w')
 
         prjxi = epIn.split(' ')
-        prj_in = prjxi[0]#.lower()
-        inProj = Proj(init='epsg:3758') #Proj(prj_in)
+        prj_in = prjxi[0].lower()
+        #inProj = Proj(init='epsg:3857') #Proj(prj_in)
+        inProj = Proj(init=prj_in)	
+		
 
         prjxo = epOut.split(' ')
-        prj_out = prjxo[0]#.lower()
-        outProj = Proj(init='epsg:31258') #Proj(prj_out)
-
+        prj_out = prjxo[0].lower()
+        #outProj = Proj(init='epsg:31258') #Proj(prj_out)
+        outProj = Proj(init=prj_out)
+        
+        
         Lines = infile.readlines()
         count = 0
         for lines in Lines: 
@@ -303,10 +307,12 @@ class GeoConverter:
                # hier konverteiren
                #transformer = Transformer.from_crs("EPSG:3857", "EPSG:31258")
                x1,y1 = rechts,hoch
+               #print(str(x1)+"-"+str(y1))
                x2,y2 = transform(inProj,outProj,x1,y1)
                x2 = round(x2,8)
                y2 = round(y2,8)
-               outfile.write(x2+outsep+y2+outsep+zet+"\n")
+               #print(str(x1)+" - "+str(y1) + " => " + str(x2)+" - "+str(y2))
+               outfile.write(str(x2)+self.sep_out+str(y2)+self.sep_out+str(zet)+"\n")
         infile.close()
         outfile.close()
 
