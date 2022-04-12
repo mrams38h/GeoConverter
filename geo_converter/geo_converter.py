@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+
+
+
 /***************************************************************************
  GeoConverter
                                  A QGIS plugin
@@ -232,27 +235,27 @@ class GeoConverter:
         for line in Lines:
             parts = line.split(self.sep_in)
             siz = len(parts) # anzahl der Spalten
-            if count == 1:                    
-                self.dlg.table_preview.setColumnCount(3)
-                self.dlg.table_preview.setRowCount(12)
-                hdnames = ['X','Y','Z']
-                for i in range(siz):
-                    hdnames.append("Feld "+str(i))
-                    self.dlg.table_preview.setHorizontalHeaderLabels(hdnames)
-                    self.dlg.combo_feld1.clear()
-                    self.dlg.combo_feld2.clear()
-                    self.dlg.combo_feld3.clear()
-                    for i in range(siz):
-                        self.dlg.combo_feld1.addItem("Feld "+str(i))
-                        self.dlg.combo_feld2.addItem("Feld "+str(i))
-                        self.dlg.combo_feld3.addItem("Feld "+str(i))
-                #for i in range(siz):
-                #    self.dlg.table_preview.setItem(count,i,QTableWidgetItem(parts[i]))
-            count += 1
+            if siz > 2 and parts[0].isnumeric(): # wenn mindestens 3 spalten vorhande sind und 1. teil eine zahl ist
+               if count == 1:                    
+                   self.dlg.table_preview.setColumnCount(3)
+                   self.dlg.table_preview.setRowCount(12)
+                   hdnames = ['X','Y','Z']
+                   for i in range(siz):
+                       hdnames.append("Feld "+str(i))
+                       self.dlg.table_preview.setHorizontalHeaderLabels(hdnames)
+                       self.dlg.combo_feld1.clear()
+                       self.dlg.combo_feld2.clear()
+                       self.dlg.combo_feld3.clear()
+                       for i in range(siz):
+                          self.dlg.combo_feld1.addItem("Feld "+str(i))
+                          self.dlg.combo_feld2.addItem("Feld "+str(i))
+                          self.dlg.combo_feld3.addItem("Feld "+str(i))
+               
+               count += 1
                 #print(line)
 
-            if count == 10:
-                break
+               if count == 10:
+                   break
 
         
     def updateTable(self):
@@ -268,16 +271,19 @@ class GeoConverter:
         count = 0
         for line in Lines:
             parts = line.split(self.sep_in)
-            self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[self.pos1]))
-            self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[self.pos2]))
-            self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[self.pos3]))
-            count += 1
+            if len(parts) > 2 and parts[0].isnumeric(): # wenn mindestens 3 spalten vorhande sind und 1. teil eine zahl ist
+                self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[self.pos1]))
+                self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[self.pos2]))
+                self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[self.pos3]))
+                count += 1
         file.close()
         
 
     def convertFile(self):
         #insep = self.dlg.combo_sep_in.currentText()
         #outsep = self.dlg.combo_sep_out.currentText()
+        tp2 = self.dlg.combo_sep_out.currentIndex()
+        self.sep_out = self.seplist[tp2]
 
         epIn = self.dlg.combo_epsg_in.currentText()
         epOut = self.dlg.combo_epsg_out.currentText()
@@ -300,7 +306,7 @@ class GeoConverter:
         count = 0
         for lines in Lines: 
             parts = lines.split(self.sep_in)
-            if len(parts)>=3 : 
+            if len(parts)>=3 and parts[0].isnumeric() : 
                rechts = parts[self.pos1]
                hoch = parts[self.pos2]
                zet = parts[self.pos3]
