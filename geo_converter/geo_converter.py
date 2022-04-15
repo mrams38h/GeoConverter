@@ -237,20 +237,27 @@ class GeoConverter:
             siz = len(parts) # anzahl der Spalten
             if siz > 2 and parts[0].isnumeric(): # wenn mindestens 3 spalten vorhande sind und 1. teil eine zahl ist
                if count == 1:                    
-                   self.dlg.table_preview.setColumnCount(3)
+                   self.dlg.table_preview.setColumnCount(5)
                    self.dlg.table_preview.setRowCount(12)
-                   hdnames = ['X','Y','Z']
+                   hdnames = ['ID','X','Y','Z','CODE']
                    for i in range(siz):
                        hdnames.append("Feld "+str(i))
                        self.dlg.table_preview.setHorizontalHeaderLabels(hdnames)
                        self.dlg.combo_feld1.clear()
                        self.dlg.combo_feld2.clear()
                        self.dlg.combo_feld3.clear()
+                       self.dlg.combo_feld4.clear()
+                       self.dlg.combo_feld5.clear()
+                       self.dlg.combo_feld4.addItem("<IGNORE>")
+                       self.dlg.combo_feld4.addItem("<AUTO>")
+                       self.dlg.combo_feld5.addItem("<IGNORE>")
+                       self.dlg.combo_feld5.addItem("<AUTO>")
                        for i in range(siz):
                           self.dlg.combo_feld1.addItem("Feld "+str(i))
                           self.dlg.combo_feld2.addItem("Feld "+str(i))
                           self.dlg.combo_feld3.addItem("Feld "+str(i))
-               
+                          self.dlg.combo_feld4.addItem("Feld "+str(i))
+                          self.dlg.combo_feld5.addItem("Feld "+str(i))               
                count += 1
                 #print(line)
 
@@ -263,6 +270,9 @@ class GeoConverter:
         self.pos1 = self.dlg.combo_feld1.currentIndex()
         self.pos2 = self.dlg.combo_feld2.currentIndex()
         self.pos3 = self.dlg.combo_feld3.currentIndex()
+        self.pos4 = self.dlg.combo_feld4.currentIndex() # 0=ignore, 1=auto
+        self.pos5 = self.dlg.combo_feld5.currentIndex() # 0=ignore, 1=auto
+        code = self.dlg.text_code.text()
 
         
         file = open(self.inname, 'r')
@@ -272,14 +282,36 @@ class GeoConverter:
         for line in Lines:
             parts = line.split(self.sep_in)
             if len(parts) > 2 and parts[0].isnumeric(): # wenn mindestens 3 spalten vorhande sind und 1. teil eine zahl ist
-                self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[self.pos1]))
-                self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[self.pos2]))
-                self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[self.pos3]))
+                if self.pos4 > 1:
+                     self.dlg.table_preview.setItem(count,0,QTableWidgetItem(parts[self.pos4-2]))
+                elif self.pos4 == 1:
+                     self.dlg.table_preview.setItem(count,0,QTableWidgetItem(str(count+1)))
+                else:
+                     self.dlg.table_preview.setItem(count,0,QTableWidgetItem("leer"))
+
+                if self.pos5 > 1:
+                     self.dlg.table_preview.setItem(count,4,QTableWidgetItem(parts[self.pos5-2]))
+                elif self.pos5 == 1:
+                     self.dlg.table_preview.setItem(count,4,QTableWidgetItem(code))
+                else:
+                     self.dlg.table_preview.setItem(count,4,QTableWidgetItem("leer"))
+
+                self.dlg.table_preview.setItem(count,1,QTableWidgetItem(parts[self.pos1]))
+                self.dlg.table_preview.setItem(count,2,QTableWidgetItem(parts[self.pos2]))
+                self.dlg.table_preview.setItem(count,3,QTableWidgetItem(parts[self.pos3]))
                 count += 1
         file.close()
         
 
     def convertFile(self):
+        self.pos1 = self.dlg.combo_feld1.currentIndex()
+        self.pos2 = self.dlg.combo_feld2.currentIndex()
+        self.pos3 = self.dlg.combo_feld3.currentIndex()
+        self.pos4 = self.dlg.combo_feld4.currentIndex() # 0=ignore, 1=auto
+        self.pos5 = self.dlg.combo_feld5.currentIndex() # 0=ignore, 1=auto
+        print("SEL4 ist "+str(self.pos4))
+        print("SEL5 ist "+str(self.pos5))
+
         #insep = self.dlg.combo_sep_in.currentText()
         #outsep = self.dlg.combo_sep_out.currentText()
         tp2 = self.dlg.combo_sep_out.currentIndex()
@@ -301,6 +333,7 @@ class GeoConverter:
         #outProj = Proj(init='epsg:31258') #Proj(prj_out)
         outProj = Proj(init=prj_out)
         
+        code = self.dlg.text_code.text()
         
         Lines = infile.readlines()
         count = 0
@@ -318,7 +351,26 @@ class GeoConverter:
                x2 = round(x2,8)
                y2 = round(y2,8)
                #print(str(x1)+" - "+str(y1) + " => " + str(x2)+" - "+str(y2))
-               outfile.write(str(x2)+self.sep_out+str(y2)+self.sep_out+str(zet)+"\n")
+               
+               outtext_mid = str(x2)+self.sep_out+str(y2)+self.sep_out+str(zet)
+               if self.pos4 > 1: # nicht ignore und nicht auto
+                    outtext = parts[self.pos4-2]+self.sep_out+outtext_mid
+               elif self.pos4 == 1:
+                    outtext_mid = str(count+1)+self.sep_out+outtext_mid
+               else:
+                    outtext_mid = outtext_mid
+
+               if self.pos5 > 1: # nicht ignore und nicht auto
+                    outtext = outtext_mid+self.sep_out+parts[self.pos5-2]
+               elif self.pos4 == 1:
+                    outtext_mid = outtext_mid+self.sep_out+code
+               else:
+                    outtext_mid = outtext_mid
+               count += 1
+
+               outfile.write(outtext_mid+"\n")
+
+
         infile.close()
         outfile.close()
 
