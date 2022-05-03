@@ -208,7 +208,7 @@ class GeoConverter:
     def openInFile(self):
         temp = QFileDialog.getOpenFileName(self.dlg, 'Open file', 'c:\\',"Text files (*.txt *.csv)")
         self.inname = temp[0]
-        print(self.inname)
+        #print(self.inname)
         self.dlg.text_input.setText(self.inname)
         self.populateCombos()
         
@@ -216,7 +216,7 @@ class GeoConverter:
     def openOutFile(self):
         temp = QFileDialog.getSaveFileName(self.dlg, 'Save file')
         self.outname = temp[0]
-        print(self.outname)
+        #print(self.outname)
         self.dlg.text_output.setText(self.outname)
    
     def populateCombos(self):
@@ -250,8 +250,10 @@ class GeoConverter:
                        self.dlg.combo_feld5.clear()
                        self.dlg.combo_feld4.addItem("<IGNORE>")
                        self.dlg.combo_feld4.addItem("<AUTO>")
+                       #self.dlg.combo_feld4.addItem("<FILE>")
                        self.dlg.combo_feld5.addItem("<IGNORE>")
-                       self.dlg.combo_feld5.addItem("<AUTO>")
+                       self.dlg.combo_feld5.addItem("<MANUAL>")
+                      #self.dlg.combo_feld5.addItem("<FILE>")
                        for i in range(siz):
                           self.dlg.combo_feld1.addItem("Feld "+str(i))
                           self.dlg.combo_feld2.addItem("Feld "+str(i))
@@ -304,13 +306,16 @@ class GeoConverter:
         
 
     def convertFile(self):
+
+        self.dlg.lable_status.setText("Converting...")
+
         self.pos1 = self.dlg.combo_feld1.currentIndex()
         self.pos2 = self.dlg.combo_feld2.currentIndex()
         self.pos3 = self.dlg.combo_feld3.currentIndex()
-        self.pos4 = self.dlg.combo_feld4.currentIndex() # 0=ignore, 1=auto
-        self.pos5 = self.dlg.combo_feld5.currentIndex() # 0=ignore, 1=auto
-        print("SEL4 ist "+str(self.pos4))
-        print("SEL5 ist "+str(self.pos5))
+        self.pos4 = self.dlg.combo_feld4.currentIndex() # 0=ignore, 1=auto; ID
+        self.pos5 = self.dlg.combo_feld5.currentIndex() # 0=ignore, 1=manual; Punktcode
+        #print("SEL4 ist "+str(self.pos4))
+        #print("SEL5 ist "+str(self.pos5))
 
         #insep = self.dlg.combo_sep_in.currentText()
         #outsep = self.dlg.combo_sep_out.currentText()
@@ -354,14 +359,14 @@ class GeoConverter:
                
                outtext_mid = str(x2)+self.sep_out+str(y2)+self.sep_out+str(zet)
                if self.pos4 > 1: # nicht ignore und nicht auto
-                    outtext = parts[self.pos4-2]+self.sep_out+outtext_mid
+                    outtext_mid = parts[self.pos4-2]+self.sep_out+outtext_mid
                elif self.pos4 == 1:
                     outtext_mid = str(count+1)+self.sep_out+outtext_mid
                else:
                     outtext_mid = outtext_mid
 
                if self.pos5 > 1: # nicht ignore und nicht auto
-                    outtext = outtext_mid+self.sep_out+parts[self.pos5-2]
+                    outtext_mid = outtext_mid+self.sep_out+parts[self.pos5-2]
                elif self.pos4 == 1:
                     outtext_mid = outtext_mid+self.sep_out+code
                else:
@@ -373,6 +378,7 @@ class GeoConverter:
 
         infile.close()
         outfile.close()
+        self.dlg.lable_status.setText("Finished!")
 
 
 
