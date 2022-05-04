@@ -338,7 +338,7 @@ class GeoConverter:
         #outProj = Proj(init='epsg:31258') #Proj(prj_out)
         outProj = Proj(init=prj_out)
         
-        code = self.dlg.text_code.text()
+        code = self.dlg.text_code.text()#.rstrip()
         
         Lines = infile.readlines()
         count = 0
@@ -358,6 +358,7 @@ class GeoConverter:
                #print(str(x1)+" - "+str(y1) + " => " + str(x2)+" - "+str(y2))
                
                outtext_mid = str(x2)+self.sep_out+str(y2)+self.sep_out+str(zet)
+               outtext_mid = outtext_mid.rstrip()
                if self.pos4 > 1: # nicht ignore und nicht auto
                     outtext_mid = parts[self.pos4-2]+self.sep_out+outtext_mid
                elif self.pos4 == 1:
